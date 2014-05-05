@@ -1,5 +1,6 @@
 class BnaViewController < UIViewController
-  CODE_CELL_ID = 'BNA_CODE'
+  CODE_CELL_ID = 'BNA_CODE_CELL'
+  Regions = [:CN, :US, :EU]
 
   def viewDidLoad
     super
@@ -24,21 +25,28 @@ class BnaViewController < UIViewController
 
   private
 
+  def dummy
+    # to make sheet.send :'initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:', ... work
+    UIActionSheet.alloc.initWithTitle(nil, delegate:nil, cancelButtonTitle:nil, destructiveButtonTitle:nil, otherButtonTitles:nil)
+  end
+
   def addAuthenticator(sender)
-    sheet = UIActionSheet.alloc.initWithTitle('Choose Region',
-                                              delegate: self,
-                                              cancelButtonTitle: 'Cancel',
-                                              destructiveButtonTitle: nil,
-                                              otherButtonTitles: 'CN', 'US', 'EU', nil)
+    args = ['Choose Region', self, 'Cancel', nil]
+    args.concat Regions
+    args << nil
+
+    sheet = UIActionSheet.alloc
+    sheet.send :'initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:', *args
     sheet.showFromBarButtonItem(sender, animated: true)
   end
 
   def actionSheet(sheet, clickedButtonAtIndex: index)
-    puts "##{index} choosen"
+    selected_region = Regions.fetch index, nil
+    puts "##{index} #{selected_region} choosen" unless selected_region.nil?
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    5
+    0
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
