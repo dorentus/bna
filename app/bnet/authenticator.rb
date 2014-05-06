@@ -104,7 +104,7 @@ module Bnet
                                    .HMACSHA1DigestWithKey(secret.binary.to_data)
                                    .to_str
 
-      start_position = digest.bytes.to_a[19] & 0xf
+      start_position = digest.each_char.take(19).last.bytes.first & 0xf
 
       token = digest[start_position, 4].unpack('L>')[0] & 0x7fffffff
 

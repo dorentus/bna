@@ -1,4 +1,4 @@
-describe "battlenet-authenticator" do
+describe "bnet-authenticator" do
   before do
     @authenticator = Bnet::Authenticator.new 'CN-1402-1943-1283', '4202aa2182640745d8a807e0fe7e34b30c1edb23'
   end
@@ -7,10 +7,19 @@ describe "battlenet-authenticator" do
     @authenticator.restorecode.should == '4CKBN08QEB'
   end
 
-  it "calculates token correctly" do
+  it "calculates token correctly at 1347279358" do
     @authenticator.get_token(1347279358).should == ['61459300', 1347279360]
+  end
+
+  it "calculates token correctly at 1347279359" do
     @authenticator.get_token(1347279359).should == ['61459300', 1347279360]
+  end
+
+  it "calculates token correctly at 1347279360" do
     @authenticator.get_token(1347279360).should == ['75939986', 1347279390]
+  end
+
+  it "calculates token correctly at 1370448000" do
     @authenticator.get_token(1370448000).should == ['59914793', 1370448030]
   end
 end
