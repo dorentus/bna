@@ -87,7 +87,7 @@ module Bnet
     # @return [Integer] server timestamp in seconds
     def self.request_server_time(region)
       server_time_big_endian = request_for('server time', region, TIME_REQUEST_PATH)
-      server_time_big_endian.unpack('Q>')[0].to_f / 1000
+      server_time_big_endian.reverse.unpack('Q')[0].to_f / 1000
     end
 
     # Get token from given secret and timestamp
@@ -100,13 +100,13 @@ module Bnet
 
       current = (timestamp || Time.now.getutc.to_i) / 30
 
-      digest = [current].pack('Q>').to_data
-                                   .HMACSHA1DigestWithKey(secret.binary.to_data)
-                                   .to_str
+      digest = [current].pack('Q').reverse.to_data
+                                  .HMACSHA1DigestWithKey(secret.binary.to_data)
+                                  .to_str
 
-      start_position = digest.each_char.take(19).last.bytes.first & 0xf
+      start_position = digest.each_char.take(20).last.bytes.first & 0xf
 
-      token = digest[start_position, 4].unpack('L>')[0] & 0x7fffffff
+      token = digest[start_position, 4].reverse.unpack('L')[0] & 0x7fffffff
 
       return '%08d' % (token % 100000000), (current + 1) * 30
     end
