@@ -13,7 +13,7 @@
 - (NSData *)HMACSHA1DigestWithKey:(NSData *)keyData
 {
   NSMutableData *result = [NSMutableData dataWithLength:CC_SHA1_DIGEST_LENGTH];
-  CCHmac(kCCHmacAlgSHA1, keyData, keyData.length, self, self.length, result.mutableBytes);
+  CCHmac(kCCHmacAlgSHA1, keyData.bytes, keyData.length, self.bytes, self.length, result.mutableBytes);
   return result;
 }
 
