@@ -15,7 +15,7 @@ module Bnet
       end
 
       def decrypt_response(text, key)
-        text.bytes.zip(key.bytes).reduce('') do |memo, pair|
+        text.bytes.zip(key.bytes.to_a).reduce('') do |memo, pair|
           memo + (pair[0] ^ pair[1]).chr
         end
       end
@@ -28,19 +28,22 @@ module Bnet
       def request_for(label, region, path, body = nil)
         raise BadInputError.new("bad region #{region}") unless AUTHENTICATOR_HOSTS.has_key? region
 
-        request = body.nil? ? Net::HTTP::Get.new(path) : Net::HTTP::Post.new(path)
-        request.content_type = 'application/octet-stream'
-        request.body = body unless body.nil?
-
-        response = Net::HTTP.new(AUTHENTICATOR_HOSTS[region]).start do |http|
-          http.request request
+        url = NSURL.URLWithString "http://#{AUTHENTICATOR_HOSTS[region]}#{path}"
+        request = NSMutableURLRequest.requestWithURL(url)
+        request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
+        if ! body.nil?
+          request.HTTPMethod = "POST"
+          request.HTTPBody = body.to_data
         end
 
-        if response.code.to_i != 200
-          raise RequestFailedError.new("Error requesting #{label}: #{response.code}")
+        responsePtr = Pointer.new :object
+        responseData = NSURLConnection.sendSynchronousRequest(request, returningResponse: responsePtr, error: nil)
+
+        if responsePtr.value.statusCode != 200
+          raise RequestFailedError.new("Error requesting #{label}: #{responsePtr.value.statusCode}")
         end
 
-        response.body
+        responseData.to_str
       end
 
     end

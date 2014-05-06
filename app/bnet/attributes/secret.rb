@@ -9,7 +9,7 @@ module Bnet
         if secret =~ /[0-9a-f]{40}/i
           @text = secret
         elsif secret.length == 20  # treated as binary input
-          @text = secret.unpack('C*').map{ |i| i.to_s(16).rjust(2, '0') }.join
+          @text = secret.to_data.to_hex
         else
           raise BadInputError.new("bad secret #{secret}")
         end
