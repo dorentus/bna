@@ -37,10 +37,11 @@ module Bnet
         end
 
         responsePtr = Pointer.new :object
-        responseData = NSURLConnection.sendSynchronousRequest(request, returningResponse: responsePtr, error: nil)
+        errorPtr = Pointer.new :object
+        responseData = NSURLConnection.sendSynchronousRequest(request, returningResponse: responsePtr, error: errorPtr)
 
-        if responsePtr.value.statusCode != 200
-          raise RequestFailedError.new("Error requesting #{label}: #{responsePtr.value.statusCode}")
+        if responsePtr.value.nil? || responsePtr.value.statusCode != 200
+          raise RequestFailedError.new("Error requesting #{label}: [#{responsePtr.value.nil? ? "" : responsePtr.value.statusCode}]", errorPtr.value)
         end
 
         responseData.to_str
