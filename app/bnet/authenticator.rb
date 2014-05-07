@@ -68,7 +68,7 @@ module Bnet
       # stage 2
       key = create_one_time_pad(20)
 
-      digest = (serial.normalized + challenge).to_data.HMACSHA1DigestWithKey(restorecode.binary).to_str
+      digest = (serial.normalized + challenge).to_data.HMACSHA1DigestWithKey(restorecode.binary.to_data).to_str
 
       payload = serial.normalized + rsa_encrypt_bin(digest + key)
 
@@ -76,8 +76,6 @@ module Bnet
                                   serial.region,
                                   RESTORE_VALIDATE_REQUEST_PATH,
                                   payload)
-
-      puts "STAGE 2: #{response_body.to_data.to_hex}"
 
       Authenticator.new(serial, decrypt_response(response_body, key))
     end
