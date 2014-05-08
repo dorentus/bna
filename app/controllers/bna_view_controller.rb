@@ -1,6 +1,6 @@
 class BnaViewController < UIViewController
-  CODE_CELL_ID = 'BNA_CODE_CELL'
-  Regions = Bnet::AUTHENTICATOR_HOSTS.keys
+  CELL_ID = 'BNA_CODE_CELL'
+  REGIONS = Bnet::AUTHENTICATOR_HOSTS.keys
 
   def viewDidLoad
     super
@@ -14,9 +14,10 @@ class BnaViewController < UIViewController
                               UIViewAutoresizingFlexibleBottomMargin |
                               UIViewAutoresizingFlexibleWidth        |
                               UIViewAutoresizingFlexibleHeight
+    @table.separatorStyle = UITableViewCellSeparatorStyleNone
     @table.delegate = self
     @table.dataSource = self
-    @table.registerClass(NSClassFromString('UITableViewCell'), forCellReuseIdentifier: CODE_CELL_ID)
+    @table.registerClass(NSClassFromString('AuthenticatorCell'), forCellReuseIdentifier: CELL_ID)
 
     self.view.addSubview @table
 
@@ -36,7 +37,7 @@ class BnaViewController < UIViewController
 
   def addAuthenticator(sender)
     args = ['Choose Region', self, 'Cancel', nil]
-    args.concat Regions
+    args.concat REGIONS
     args << nil
 
     sheet = UIActionSheet.alloc
@@ -45,7 +46,7 @@ class BnaViewController < UIViewController
   end
 
   def actionSheet(sheet, clickedButtonAtIndex: index)
-    selected_region = Regions.fetch index, nil
+    selected_region = REGIONS.fetch index, nil
     puts "##{index} #{selected_region} choosen" unless selected_region.nil?
 
     request_queue.async do
@@ -57,14 +58,18 @@ class BnaViewController < UIViewController
       rescue Bnet::RequestFailedError => e
         puts "Error: #{e}, #{e.error}"
       end
-    end
+    end unless selected_region.nil?
   end
 
   def tableView(tableView, numberOfRowsInSection: section)
-    0
+    1
+  end
+
+  def tableView(tableView, heightForRowAtIndexPath: indexPath)
+    AuthenticatorCell::DEFAULT_HEIGHT
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
-    tableView.dequeueReusableCellWithIdentifier(CODE_CELL_ID, forIndexPath: indexPath)
+    tableView.dequeueReusableCellWithIdentifier(CELL_ID, forIndexPath: indexPath)
   end
 end
