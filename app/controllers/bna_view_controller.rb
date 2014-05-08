@@ -18,11 +18,11 @@ module AuthenticatorTable
   end
 
   def tableView(tableView, heightForHeaderInSection: section)
-    0
+    CGFLOAT_MIN
   end
 
   def tableView(tableView, heightForFooterInSection: section)
-    0
+    8.0
   end
 end
 
