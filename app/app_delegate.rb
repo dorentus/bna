@@ -1,7 +1,8 @@
 class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-    @window.rootViewController = UINavigationController.alloc.initWithRootViewController(BnaViewController.alloc.init)
+    @storyboard ||= UIStoryboard.storyboardWithName('MainStoryboard', bundle:nil)
+    @window.rootViewController = @storyboard.instantiateInitialViewController
     @window.rootViewController.wantsFullScreenLayout = true
     @window.makeKeyAndVisible
     true

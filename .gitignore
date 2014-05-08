@@ -17,3 +17,4 @@ nbproject
 .dat*.*
 /vendor/Pods
 /vendor/*/build-*
+/ib.xcodeproj

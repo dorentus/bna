@@ -1,30 +1,33 @@
-class BnaViewController < UIViewController
-  CELL_ID = 'BNA_CODE_CELL'
-  REGIONS = Bnet::AUTHENTICATOR_HOSTS.keys
+module AuthenticatorTable
+  CELL_ID = 'AUTHENTICATOR_CELL'
 
-  def viewDidLoad
-    super
-
-    self.view.backgroundColor = UIColor.whiteColor
-
-    @table = UITableView.alloc.initWithFrame self.view.bounds
-    @table.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin   |
-                              UIViewAutoresizingFlexibleRightMargin  |
-                              UIViewAutoresizingFlexibleTopMargin    |
-                              UIViewAutoresizingFlexibleBottomMargin |
-                              UIViewAutoresizingFlexibleWidth        |
-                              UIViewAutoresizingFlexibleHeight
-    @table.separatorStyle = UITableViewCellSeparatorStyleNone
-    @table.delegate = self
-    @table.dataSource = self
-    @table.registerClass(NSClassFromString('AuthenticatorCell'), forCellReuseIdentifier: CELL_ID)
-
-    self.view.addSubview @table
-
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAdd, target: self, action: :"addAuthenticator:")
+  def tableView(tableView, numberOfRowsInSection: section)
+    1
   end
 
-  private
+  def numberOfSectionsInTableView(tableView)
+    15
+  end
+
+  def tableView(tableView, cellForRowAtIndexPath: indexPath)
+    tableView.dequeueReusableCellWithIdentifier(CELL_ID, forIndexPath: indexPath)
+  end
+
+  def tableView(tableView, heightForRowAtIndexPath: indexPath)
+    AuthenticatorCell::DEFAULT_HEIGHT
+  end
+
+  def tableView(tableView, heightForHeaderInSection: section)
+    0
+  end
+
+  def tableView(tableView, heightForFooterInSection: section)
+    0
+  end
+end
+
+module AddButton
+  REGIONS = Bnet::AUTHENTICATOR_HOSTS.keys
 
   def request_queue
     @request_queue ||= Dispatch::Queue.new 'bna_request'
@@ -35,7 +38,7 @@ class BnaViewController < UIViewController
     UIActionSheet.alloc.initWithTitle(nil, delegate:nil, cancelButtonTitle:nil, destructiveButtonTitle:nil, otherButtonTitles:nil)
   end
 
-  def addAuthenticator(sender)
+  def addButtonTapped(sender)
     args = ['Choose Region', self, 'Cancel', nil]
     args.concat REGIONS
     args << nil
@@ -60,16 +63,18 @@ class BnaViewController < UIViewController
       end
     end unless selected_region.nil?
   end
+end
 
-  def tableView(tableView, numberOfRowsInSection: section)
-    1
+class BnaViewController < UITableViewController
+  extend IB
+
+  include AuthenticatorTable
+  include AddButton
+
+  ib_action :addButtonTapped
+
+  def viewDidLoad
+    super
   end
 
-  def tableView(tableView, heightForRowAtIndexPath: indexPath)
-    AuthenticatorCell::DEFAULT_HEIGHT
-  end
-
-  def tableView(tableView, cellForRowAtIndexPath: indexPath)
-    tableView.dequeueReusableCellWithIdentifier(CELL_ID, forIndexPath: indexPath)
-  end
 end
