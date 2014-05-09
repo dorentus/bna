@@ -1,5 +1,4 @@
 module Bnet
-
   CLIENT_MODEL = 'bn/authenticator'
   RSA_MOD = "955e4bd989f3917d2f15544a7e0504eb\
              9d7bb66b6f8a2fe470e453c779200e5e\
@@ -11,9 +10,9 @@ module Bnet
              05fee59e19136cdb7c83f2ab8b0a2a99".gsub(/\s+/, '').to_i(16)
   RSA_KEY = 257
   AUTHENTICATOR_HOSTS = {
-    :CN => "mobile-service.battlenet.com.cn",
-    :EU => "m.eu.mobileservice.blizzard.com",
-    :US => "m.us.mobileservice.blizzard.com",
+    CN: "mobile-service.battlenet.com.cn",
+    EU: "m.eu.mobileservice.blizzard.com",
+    US: "m.us.mobileservice.blizzard.com",
   }
   ENROLLMENT_REQUEST_PATH = '/enrollment/enroll.htm'
   TIME_REQUEST_PATH = '/enrollment/time.htm'
@@ -30,5 +29,4 @@ module Bnet
     30=>89, 31=>90, 32=>91
   }
   RESTORECODE_MAP_INVERSE = RESTORECODE_MAP.invert
-
 end

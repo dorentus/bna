@@ -1,16 +1,10 @@
-#require 'net/http'
-#require 'digest/sha1'
-
 module Bnet
-
   class Authenticator
-
     class << self
-
       def create_one_time_pad(length)
-        (0..1.0/0.0).reduce('') do |memo, i|
+        (0..1.0 / 0.0).reduce('') do |memo, _|
           break memo if memo.length >= length
-          memo << rand().to_s.to_data.SHA1HexDigest
+          memo << rand.to_s.to_data.SHA1HexDigest
         end[0, length]
       end
 
@@ -21,8 +15,8 @@ module Bnet
       end
 
       def rsa_encrypt_bin(bin)
-        i = bin.unpack('C*').map{ |i| i.to_s(16).rjust(2, '0') }.join.to_i(16)
-        (i ** RSA_KEY % RSA_MOD).to_s(16).scan(/.{2}/).map {|s| s.to_i(16)}.pack('C*')
+        i = bin.unpack('C*').map { |x| x.to_s(16).rjust(2, '0') }.join.to_i(16)
+        (i**RSA_KEY % RSA_MOD).to_s(16).scan(/.{2}/).map { |s| s.to_i(16) }.pack('C*')
       end
 
       def request_for(label, region, path, body = nil)
@@ -46,9 +40,6 @@ module Bnet
 
         responseData.to_str
       end
-
     end
-
   end
-
 end

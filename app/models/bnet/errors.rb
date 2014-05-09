@@ -1,5 +1,4 @@
 module Bnet
-
   class RequestFailedError < StandardError
     attr_reader :error
 
@@ -10,5 +9,4 @@ module Bnet
   end
 
   class BadInputError < StandardError; end
-
 end

@@ -1,10 +1,6 @@
-#require 'digest/hmac'
-
 module Bnet
-
   # The Battle.net authenticator
   class Authenticator
-
     # @!attribute [r] serial
     # @return [String] serial
     attr_reader :serial
@@ -41,10 +37,13 @@ module Bnet
     def self.request_authenticator(region)
       k = create_one_time_pad(37)
 
-      payload_plain = "\1" + k + region.to_s + CLIENT_MODEL.ljust(16, "\0")[0, 16]
-      e = rsa_encrypt_bin(payload_plain)
+      text = "\1" + k + region.to_s + CLIENT_MODEL.ljust(16, "\0")[0, 16]
+      e = rsa_encrypt_bin(text)
 
-      response_body = request_for('new serial', region, ENROLLMENT_REQUEST_PATH, e)
+      response_body = request_for('new serial',
+                                  region,
+                                  ENROLLMENT_REQUEST_PATH,
+                                  e)
 
       decrypted = decrypt_response(response_body[8, 37], k)
 
@@ -68,7 +67,8 @@ module Bnet
       # stage 2
       key = create_one_time_pad(20)
 
-      digest = (serial.normalized + challenge).to_data.HMACSHA1DigestWithKey(restorecode.binary.to_data).to_str
+      digest = (serial.normalized + challenge).to_data
+                .HMACSHA1DigestWithKey(restorecode.binary.to_data).to_str
 
       payload = serial.normalized + rsa_encrypt_bin(digest + key)
 
@@ -84,8 +84,8 @@ module Bnet
     # @param region [Symbol]
     # @return [Integer] server timestamp in seconds
     def self.request_server_time(region)
-      server_time_big_endian = request_for('server time', region, TIME_REQUEST_PATH)
-      server_time_big_endian.reverse.unpack('Q')[0].to_f / 1000
+      server_time_be = request_for('server time', region, TIME_REQUEST_PATH)
+      server_time_be.reverse.unpack('Q')[0].to_f / 1000
     end
 
     # Get token from given secret and timestamp
@@ -106,7 +106,7 @@ module Bnet
 
       token = digest[start_position, 4].reverse.unpack('L')[0] & 0x7fffffff
 
-      return '%08d' % (token % 100000000), (current + 1) * 30
+      [sprintf('%08d', token % 1_0000_0000), (current + 1) * 30]
     end
 
     # Get authenticator's token from given timestamp
@@ -121,10 +121,10 @@ module Bnet
     # @return [Hash]
     def to_hash
       {
-        :serial => serial,
-        :secret => secret,
-        :restorecode => restorecode,
-        :region => region,
+        serial: serial,
+        secret: secret,
+        restorecode: restorecode,
+        region: region
       }
     end
 
@@ -133,7 +133,5 @@ module Bnet
     def to_s
       to_hash.to_s
     end
-
   end
-
 end

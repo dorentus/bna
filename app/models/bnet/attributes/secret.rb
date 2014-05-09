@@ -16,7 +16,7 @@ module Bnet
       end
 
       def binary
-        text.scan(/.{2}/).map{|s| s.to_i(16)}.pack('C*')
+        text.scan(/.{2}/).map { |s| s.to_i(16) }.pack('C*')
       end
 
       alias_method :to_s, :text
