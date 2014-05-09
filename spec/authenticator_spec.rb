@@ -24,19 +24,21 @@ describe "bnet-authenticator-load" do
   end
 end
 
-describe "bnet-authenticator-networking" do
-  it "can request for server time" do
-    timestamp = Bnet::Authenticator.request_server_time :EU
-    (Time.now.getutc.to_i - timestamp).abs.should <= 30
-  end
+if ENV['TRAVIS'].nil?
+  describe "bnet-authenticator-networking" do
+    it "can request for server time" do
+      timestamp = Bnet::Authenticator.request_server_time :EU
+      (Time.now.getutc.to_i - timestamp).abs.should <= 30
+    end
 
-  it "can request for a new authenticator" do
-    🔐 = Bnet::Authenticator.request_authenticator :US
-    🔐.region.should == :US
-  end
+    it "can request for a new authenticator" do
+      🔐 = Bnet::Authenticator.request_authenticator :US
+      🔐.region.should == :US
+    end
 
-  it "can restore an anthenticator" do
-    🔐 = Bnet::Authenticator.restore_authenticator 'CN-1402-1943-1283', '4CKBN08QEB'
-    🔐.secret.should == '4202aa2182640745d8a807e0fe7e34b30c1edb23'
+    it "can restore an anthenticator" do
+      🔐 = Bnet::Authenticator.restore_authenticator 'CN-1402-1943-1283', '4CKBN08QEB'
+      🔐.secret.should == '4202aa2182640745d8a807e0fe7e34b30c1edb23'
+    end
   end
 end
