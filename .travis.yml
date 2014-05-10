@@ -3,3 +3,4 @@ before_install:
   - sudo chown -R travis ~/Library/RubyMotion
   - mkdir -p ~/Library/RubyMotion/build
   - sudo motion update
+env: SPEC_SKIP_NETWORKING=1

@@ -22,9 +22,13 @@ describe "bnet-authenticator-load" do
   it "calculates token correctly at 1370448000" do
     @🔐.get_token(1370448000).should == ['59914793', 1370448030]
   end
+
+  it "calculates token correctly at 1399654110" do
+    @🔐.get_token(1399654110).should == ["27361314", 1399654140]
+  end
 end
 
-if ENV['TRAVIS'].nil?
+if ENV['SPEC_SKIP_NETWORKING'].nil?
   describe "bnet-authenticator-networking" do
     it "can request for server time" do
       timestamp = Bnet::Authenticator.request_server_time :EU

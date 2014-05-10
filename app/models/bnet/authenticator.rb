@@ -45,9 +45,9 @@ module Bnet
                                   ENROLLMENT_REQUEST_PATH,
                                   e)
 
-      decrypted = decrypt_response(response_body[8, 37], k)
+      decrypted = decrypt_response(response_body.bytes.to_a[8, 37].map(&:chr).join, k)
 
-      Authenticator.new(decrypted[20, 17], decrypted[0, 20])
+      Authenticator.new(decrypted.bytes.to_a[20, 17].map(&:chr).join, decrypted.bytes.to_a[0, 20].map(&:chr).join)
     end
 
     # Restore an authenticator from server
@@ -104,7 +104,7 @@ module Bnet
 
       start_position = digest.each_char.take(20).last.bytes.first & 0xf
 
-      token = digest[start_position, 4].reverse.unpack('L')[0] & 0x7fffffff
+      token = digest.bytes.to_a[start_position, 4].reverse.map(&:chr).join.unpack('L')[0] & 0x7fffffff
 
       [sprintf('%08d', token % 1_0000_0000), (current + 1) * 30]
     end
