@@ -7,7 +7,6 @@ class AuthenticatorCell < UITableViewCell
 
   outlet :token_label, UILabel
   outlet :serial_label, UILabel
-  outlet :restorecode_label, UILabel
 
   def start_timer
     @timer.invalidate if (@timer && @timer.valid?)
@@ -39,7 +38,6 @@ class AuthenticatorCell < UITableViewCell
   def authenticator=(a_authenticator)
     @authenticator = a_authenticator
     serial_label.text = authenticator.serial
-    restorecode_label.text = authenticator.restorecode
     update_token
     start_timer unless (@timer && @timer.valid?)
   end

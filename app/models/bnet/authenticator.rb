@@ -117,6 +117,16 @@ module Bnet
       self.class.get_token(secret, timestamp)
     end
 
+    # Get progress
+    # @param timestamp [Float] UNIX timestamp in seconds,
+    #   defaults to current time
+    # @return Float progress in range (0.0 .. 1.0)
+    def self.get_progress(timestamp = nil)
+      timestamp ||= Time.now.getutc.to_f
+      next_timestamp = (timestamp.to_i / 30 + 1) * 30.0
+      1.0 - (next_timestamp - timestamp) / 30.0
+    end
+
     # Hash representation of this authenticator
     # @return [Hash]
     def to_hash

@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Bna View Controller - Title-->
+        <!--Bna View Controller - Authenticators-->
         <scene sceneID="SDN-LC-1ag">
             <objects>
                 <tableViewController id="ebS-Na-Adr" customClass="BnaViewController" sceneMemberID="viewController">
@@ -14,11 +14,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AUTHENTICATOR_CELL" rowHeight="88" id="kwW-LM-6BF" customClass="AuthenticatorCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AUTHENTICATOR_CELL" rowHeight="88" id="kwW-LM-6BF" customClass="AuthenticatorCell">
                                 <rect key="frame" x="0.0" y="86" width="320" height="88"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kwW-LM-6BF" id="71m-du-djN">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="87"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="253" height="87"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="55555555" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rgf-p4-bml">
@@ -35,19 +35,12 @@
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="4CKBN08QEB" textAlignment="right" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTQ-Gt-Wpw">
-                                            <rect key="frame" x="160" y="65" width="140" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <color key="highlightedColor" red="0.0" green="0.50196078430000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </label>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="restorecode_label" destination="LTQ-Gt-Wpw" id="bpW-4n-RTM"/>
                                     <outlet property="serial_label" destination="IiA-Qu-idE" id="73o-IW-ZCe"/>
                                     <outlet property="token_label" destination="rgf-p4-bml" id="u1P-tN-umG"/>
+                                    <segue destination="7nT-1x-2UD" kind="push" trigger="accessoryAction" id="S0N-ic-4T0"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -56,7 +49,7 @@
                             <outlet property="delegate" destination="ebS-Na-Adr" id="2AF-gz-ZQy"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="cFH-8G-jwb">
+                    <navigationItem key="navigationItem" title="Authenticators" id="cFH-8G-jwb">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="DVT-rB-gbM">
                             <connections>
                                 <action selector="addButtonTapped:" destination="ebS-Na-Adr" id="FS2-Oh-Awh"/>
@@ -68,6 +61,50 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dK5-26-7yi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="186" y="-53"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="TZ4-a7-DuK">
+            <objects>
+                <viewController id="7nT-1x-2UD" customClass="DetailViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WOu-bm-11h"/>
+                        <viewControllerLayoutGuide type="bottom" id="6KO-b6-pGq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lpS-qf-g1F">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="55555555" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CzZ-ok-aGW">
+                                <rect key="frame" x="20" y="74" width="280" height="280"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="45"/>
+                                <color key="textColor" red="0.0" green="0.50196078430000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="55555555" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8OW-bF-KPI">
+                                <rect key="frame" x="20" y="362" width="280" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="DFg-MM-UAb">
+                                <rect key="frame" x="0.0" y="64" width="320" height="2"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="SNZ-Bj-lLq"/>
+                    <connections>
+                        <outlet property="countdown_view" destination="DFg-MM-UAb" id="wXq-fU-S9U"/>
+                        <outlet property="restorecode_label" destination="8OW-bF-KPI" id="d8t-Go-fUl"/>
+                        <outlet property="token_label" destination="CzZ-ok-aGW" id="BmD-B0-Y0D"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XnR-yQ-lKJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="611" y="-53"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="GUO-ca-kMw">
