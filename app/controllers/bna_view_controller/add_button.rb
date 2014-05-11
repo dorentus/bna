@@ -48,7 +48,7 @@ module BnaViewControllerAddButton
           hud.hideAfterDelay 3
         end
       rescue Bnet::RequestFailedError => e
-        puts "Error: #{e}, #{e.error}"
+        puts "Error: #{e}"
         Dispatch::Queue.main.sync do
           hud.text = e.message
           hud.hideAfterDelay 3
