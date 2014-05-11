@@ -28,6 +28,10 @@ module BnaViewControllerAddButton
       begin
         authenticator = Bnet::Authenticator.request_authenticator(selected_region)
         puts "Authenticator: #{authenticator}"
+        AuthenticatorList.add_authenticator authenticator
+        Dispatch::Queue.main.sync do
+          self.tableView.reloadData
+        end
       rescue Bnet::BadInputError => e
         puts "Error: #{e}"
       rescue Bnet::RequestFailedError => e

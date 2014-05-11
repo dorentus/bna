@@ -16,9 +16,6 @@ class DetailViewController < UIViewController
     update_token
   end
 
-  def update_token
-  end
-
   def update_display_link_timer
     update_token
   end
