@@ -16,7 +16,9 @@ module Bnet
 
       def rsa_encrypt_bin(bin)
         i = bin.unpack('C*').map { |x| x.to_s(16).rjust(2, '0') }.join.to_i(16)
-        (i**RSA_KEY % RSA_MOD).to_s(16).scan(/.{2}/).map { |s| s.to_i(16) }.pack('C*')
+        (i**RSA_KEY % RSA_MOD).to_s(16).scan(/.{2}/).map do |s|
+          s.to_i(16)
+        end.pack('C*')
       end
 
       def request_for(label, region, path, body = nil)
@@ -25,14 +27,18 @@ module Bnet
         url = NSURL.URLWithString "http://#{AUTHENTICATOR_HOSTS[region]}#{path}"
         request = NSMutableURLRequest.requestWithURL(url)
         request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
-        if ! body.nil?
+        if body
           request.HTTPMethod = "POST"
           request.HTTPBody = body.to_data
         end
 
         responsePtr = Pointer.new :object
         errorPtr = Pointer.new :object
-        responseData = NSURLConnection.sendSynchronousRequest(request, returningResponse: responsePtr, error: errorPtr)
+        responseData = NSURLConnection.sendSynchronousRequest(
+          request,
+          returningResponse: responsePtr,
+          error: errorPtr
+        )
 
         if responsePtr.value.nil? || responsePtr.value.statusCode != 200
           raise RequestFailedError, "Error requesting #{label}: [#{responsePtr.value.nil? ? "" : responsePtr.value.statusCode}]"
