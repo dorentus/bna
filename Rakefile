@@ -19,4 +19,7 @@ Motion::Project::App.setup do |app|
     pod 'SSKeychain'
     pod 'HTProgressHUD'
   end
+  app.entitlements['keychain-access-groups'] = [
+    app.seed_id + '.' + app.identifier
+  ] if ENV['TRAVIS'].nil?
 end
