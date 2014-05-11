@@ -88,16 +88,11 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="DFg-MM-UAb">
-                                <rect key="frame" x="0.0" y="64" width="320" height="2"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="SNZ-Bj-lLq"/>
                     <connections>
-                        <outlet property="countdown_view" destination="DFg-MM-UAb" id="wXq-fU-S9U"/>
                         <outlet property="restorecode_label" destination="8OW-bF-KPI" id="d8t-Go-fUl"/>
                         <outlet property="token_label" destination="CzZ-ok-aGW" id="BmD-B0-Y0D"/>
                     </connections>

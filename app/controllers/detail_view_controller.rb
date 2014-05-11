@@ -1,6 +1,5 @@
 class DetailViewController < UIViewController
   extend IB
-  include BnaDisplayLinkExt
 
   outlet :token_label, UILabel
   outlet :restorecode_label, UILabel
@@ -16,21 +15,30 @@ class DetailViewController < UIViewController
     update_token
   end
 
-  def update_display_link_timer
-    update_token
+  def viewWillAppear(animated)
+    super(animated)
+    @timer = NSTimer.scheduledTimerWithTimeInterval(0.5,
+                                                    target: self,
+                                                    selector: :update_token,
+                                                    userInfo: nil,
+                                                    repeats: true)
+    NSRunLoop.currentRunLoop.addTimer(@timer, forMode: NSRunLoopCommonModes)
+  end
+
+  def viewDidDisappear(animated)
+    super(animated)
+    @timer.invalidate if (@timer && @timer.valid?)
+    @timer = nil
   end
 
   def update_token
     return if authenticator.nil?
 
-    timestamp = Time.now.to_f
-    token, next_timestamp = authenticator.get_token(timestamp.to_i)
-    progress = 1.0 - (next_timestamp - timestamp) / 30.0
+    timestamp = Time.now.getutc.to_f
+    token, _ = authenticator.get_token timestamp.to_i
+    progress = Bnet::Authenticator.get_progress timestamp
 
     token_label.text = token
-
     token_label.textColor = BnaHelpers.color_at_progress(progress)
-    countdown_view.progress = progress
-    countdown_view.progressTintColor = BnaHelpers.color_at_progress(progress)
   end
 end
