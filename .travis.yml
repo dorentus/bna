@@ -3,5 +3,7 @@ before_install:
   - sudo chown -R travis ~/Library/RubyMotion
   - mkdir -p ~/Library/RubyMotion/build
   - sudo motion update
-  - bundle exec rake pod:install --silent
+install:
+  - bundle install
+  - bundle exec rake pod:install COCOAPODS_NO_REPO_UPDATE=1
 env: SPEC_SKIP_NETWORKING=1 LANG=en_US.UTF-8
