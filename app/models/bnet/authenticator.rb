@@ -37,7 +37,7 @@ module Bnet
     def self.request_authenticator(region)
       k = create_one_time_pad(37)
 
-      text = "\1" + k + region.to_s + CLIENT_MODEL.ljust(16, "\0")[0, 16]
+      text = "\1#{k}#{region}#{CLIENT_MODEL}".left_fix_to(56, pad_string: "\0")
       e = rsa_encrypt_bin(text)
 
       response_body = request_for('new serial',
@@ -45,9 +45,9 @@ module Bnet
                                   ENROLLMENT_REQUEST_PATH,
                                   e)
 
-      decrypted = decrypt_response(response_body.bytes.to_a[8, 37].map(&:chr).join, k)
+      decrypted = decrypt_response(response_body.substring_at(8, length: 37), k)
 
-      Authenticator.new(decrypted.bytes.to_a[20, 17].map(&:chr).join, decrypted.bytes.to_a[0, 20].map(&:chr).join)
+      Authenticator.new(decrypted.substring_at(20, length: 17), decrypted.substring_at(0, length: 20))
     end
 
     # Restore an authenticator from server
@@ -67,15 +67,12 @@ module Bnet
       # stage 2
       key = create_one_time_pad(20)
 
-      digest = (serial.normalized + challenge).to_data
-                .HMACSHA1DigestWithKey(restorecode.binary.to_data).to_str
-
-      payload = serial.normalized + rsa_encrypt_bin(digest + key)
+      digest = hmac_sha1_digest(serial.normalized + challenge, restorecode.binary)
 
       response_body = request_for('restore (stage 2)',
                                   serial.region,
                                   RESTORE_VALIDATE_REQUEST_PATH,
-                                  payload)
+                                  serial.normalized + rsa_encrypt_bin(digest + key))
 
       Authenticator.new(serial, decrypt_response(response_body, key))
     end
@@ -98,13 +95,11 @@ module Bnet
 
       current = (timestamp || Time.now.getutc.to_i) / 30
 
-      digest = [current].pack('Q').reverse.to_data
-                                  .HMACSHA1DigestWithKey(secret.binary.to_data)
-                                  .to_str
+      digest = hmac_sha1_digest([current].pack('Q').reverse, secret.binary)
 
-      start_position = digest.each_char.take(20).last.bytes.first & 0xf
+      start_position = digest.char_code_at(19) & 0xf
 
-      token = digest.bytes.to_a[start_position, 4].reverse.map(&:chr).join.unpack('L')[0] & 0x7fffffff
+      token = digest.substring_at(start_position, length: 4).reverse.unpack('L')[0] & 0x7fffffff
 
       [sprintf('%08d', token % 1_0000_0000), (current + 1) * 30]
     end

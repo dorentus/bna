@@ -21,6 +21,10 @@ module Bnet
         end.pack('C*')
       end
 
+      def hmac_sha1_digest(text, key)
+        text.to_data.HMACSHA1DigestWithKey(key.to_data).to_str
+      end
+
       def request_for(label, region, path, body = nil)
         raise BadInputError, "bad region #{region}" unless AUTHENTICATOR_HOSTS.has_key? region
 
