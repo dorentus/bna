@@ -15,7 +15,6 @@ Motion::Project::App.setup do |app|
   app.frameworks << 'QuartzCore' << 'Security'
   app.vendor_project('vendor/NSData+Digest', :static)
   app.vendor_project('vendor/UIImageEffects', :static)
-  app.entitlements['keychain-access-groups'] = [app.seed_id + '.' + app.identifier]
   app.pods do
     pod 'SSKeychain'
     pod 'HTProgressHUD'
