@@ -14,7 +14,6 @@ Motion::Project::App.setup do |app|
   app.identifier = 'rox.dorentus.bna'
   app.frameworks << 'QuartzCore' << 'Security'
   app.vendor_project('vendor/NSData+Digest', :static)
-  app.entitlements['keychain-access-groups'] = [app.seed_id + '.' + app.identifier]
   app.pods do
     pod 'SSKeychain'
     pod 'MMProgressHUD'
