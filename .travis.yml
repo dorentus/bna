@@ -4,3 +4,6 @@ before_install:
   - mkdir -p ~/Library/RubyMotion/build
   - sudo motion update
 env: SPEC_SKIP_NETWORKING=1
+script:
+  - bundle exec rake pod:install
+  - bundle exec rake spec
