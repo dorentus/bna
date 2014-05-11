@@ -1,13 +1,13 @@
 PODS:
-  - HTProgressHUD (0.1.1)
+  - MMProgressHUD (0.2.2)
   - SSKeychain (1.2.2)
 
 DEPENDENCIES:
-  - HTProgressHUD
+  - MMProgressHUD
   - SSKeychain
 
 SPEC CHECKSUMS:
-  HTProgressHUD: 93ef4df8a47fdc03fc6dbc1eea5d6d8cf75ead2d
+  MMProgressHUD: a829ed1c5382caa64498632a60507e019f780405
   SSKeychain: 3d0b76c87e7b062a7ad1631a825fddec84367d44
 
 COCOAPODS: 0.32.1

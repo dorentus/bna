@@ -26,33 +26,26 @@ module BnaViewControllerAddButton
 
     puts "##{index} #{selected_region} choosen"
 
-    hud.text = nil
-    hud.showInView(self.view, animated: true)
+    MMProgressHUD.show
     request_queue.async do
       begin
         authenticator = Bnet::Authenticator.request_authenticator(selected_region)
         puts "Authenticator: #{authenticator}"
         AuthenticatorList.add_authenticator authenticator
-        Dispatch::Queue.main.sync do
+        Dispatch::Queue.main.async do
           tableView.reloadData
           tableView.scrollToRowAtIndexPath(
             NSIndexPath.indexPathForRow(AuthenticatorList.number_of_authenticators - 1, inSection: 0),
             atScrollPosition: UITableViewScrollPositionBottom,
             animated: true)
-          hud.hideWithAnimation true
+          MMProgressHUD.dismissWithSuccess 'success!'
         end
       rescue Bnet::BadInputError => e
         puts "Error: #{e}"
-        Dispatch::Queue.main.sync do
-          hud.text = e.message
-          hud.hideAfterDelay 3
-        end
+        MMProgressHUD.dismissWithError e.message
       rescue Bnet::RequestFailedError => e
         puts "Error: #{e}"
-        Dispatch::Queue.main.sync do
-          hud.text = e.message
-          hud.hideAfterDelay 3
-        end
+        MMProgressHUD.dismissWithError e.message
       end
     end
   end

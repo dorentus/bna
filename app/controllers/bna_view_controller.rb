@@ -34,10 +34,6 @@ class BnaViewController < UITableViewController
     dest.authenticator = WeakRef.new authenticator rescue NoMethodError
   end
 
-  def hud
-    @hud ||= HTProgressHUD.alloc.init
-  end
-
   def update_progress
     return if @progressview.nil?
     progress = Bnet::Authenticator.get_progress
