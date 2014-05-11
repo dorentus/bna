@@ -11,7 +11,7 @@ module Bnet
         elsif secret.length == 20  # treated as binary input
           @text = secret.to_data.to_hex
         else
-          raise BadInputError.new("bad secret #{secret}")
+          raise BadInputError, "bad secret #{secret}"
         end
       end
 

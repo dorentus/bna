@@ -17,5 +17,6 @@ Motion::Project::App.setup do |app|
   app.entitlements['keychain-access-groups'] = [app.seed_id + '.' + app.identifier]
   app.pods do
     pod 'SSKeychain'
+    pod 'HTProgressHUD'
   end
 end

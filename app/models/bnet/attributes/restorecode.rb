@@ -6,7 +6,7 @@ module Bnet
       def initialize(serial_or_restorecode, secret = nil)
         if secret.nil?
           restorecode = serial_or_restorecode
-          raise BadInputError.new("bad restoration code #{restorecode}") unless restorecode =~ /[0-9A-Z]{10}/
+          raise BadInputError, "bad restoration code #{restorecode}" unless restorecode =~ /[0-9A-Z]{10}/
           @text = restorecode
         else
           serial = serial_or_restorecode.is_a?(Serial) ? serial_or_restorecode : Serial.new(serial_or_restorecode)

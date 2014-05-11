@@ -22,21 +22,38 @@ module BnaViewControllerAddButton
 
   def actionSheet(sheet, clickedButtonAtIndex: index)
     selected_region = REGIONS.fetch index, nil
-    puts "##{index} #{selected_region} choosen" unless selected_region.nil?
+    return if selected_region.nil?
 
+    puts "##{index} #{selected_region} choosen"
+
+    hud.text = nil
+    hud.showInView(self.view, animated: true)
     request_queue.async do
       begin
         authenticator = Bnet::Authenticator.request_authenticator(selected_region)
         puts "Authenticator: #{authenticator}"
         AuthenticatorList.add_authenticator authenticator
         Dispatch::Queue.main.sync do
-          self.tableView.reloadData
+          tableView.reloadData
+          tableView.scrollToRowAtIndexPath(
+            NSIndexPath.indexPathForRow(AuthenticatorList.number_of_authenticators - 1, inSection: 0),
+            atScrollPosition: UITableViewScrollPositionBottom,
+            animated: true)
+          hud.hideWithAnimation true
         end
       rescue Bnet::BadInputError => e
         puts "Error: #{e}"
+        Dispatch::Queue.main.sync do
+          hud.text = e.message
+          hud.hideAfterDelay 3
+        end
       rescue Bnet::RequestFailedError => e
         puts "Error: #{e}, #{e.error}"
+        Dispatch::Queue.main.sync do
+          hud.text = e.message
+          hud.hideAfterDelay 3
+        end
       end
-    end unless selected_region.nil?
+    end
   end
 end

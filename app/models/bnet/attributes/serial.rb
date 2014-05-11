@@ -5,7 +5,7 @@ module Bnet
 
       def initialize(serial)
         serial = serial.to_s.upcase.gsub(/-/, '')
-        raise BadInputError.new("bad serial #{serial}") unless serial =~ Regexp.new("^(#{AUTHENTICATOR_HOSTS.keys.join('|')})\\d{12}$")
+        raise BadInputError, "bad serial #{serial}" unless serial =~ Regexp.new("^(#{AUTHENTICATOR_HOSTS.keys.join('|')})\\d{12}$")
         @normalized = serial
       end
 

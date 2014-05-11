@@ -20,7 +20,7 @@ module Bnet
       end
 
       def request_for(label, region, path, body = nil)
-        raise BadInputError.new("bad region #{region}") unless AUTHENTICATOR_HOSTS.has_key? region
+        raise BadInputError, "bad region #{region}" unless AUTHENTICATOR_HOSTS.has_key? region
 
         url = NSURL.URLWithString "http://#{AUTHENTICATOR_HOSTS[region]}#{path}"
         request = NSMutableURLRequest.requestWithURL(url)
@@ -35,7 +35,7 @@ module Bnet
         responseData = NSURLConnection.sendSynchronousRequest(request, returningResponse: responsePtr, error: errorPtr)
 
         if responsePtr.value.nil? || responsePtr.value.statusCode != 200
-          raise RequestFailedError.new("Error requesting #{label}: [#{responsePtr.value.nil? ? "" : responsePtr.value.statusCode}]", errorPtr.value)
+          raise RequestFailedError, "Error requesting #{label}: [#{responsePtr.value.nil? ? "" : responsePtr.value.statusCode}]"
         end
 
         responseData.to_str

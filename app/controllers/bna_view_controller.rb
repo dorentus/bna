@@ -16,4 +16,8 @@ class BnaViewController < UITableViewController
     authenticator = sender.authenticator
     dest.authenticator = WeakRef.new authenticator rescue NoMethodError
   end
+
+  def hud
+    @hud ||= HTProgressHUD.alloc.init
+  end
 end
