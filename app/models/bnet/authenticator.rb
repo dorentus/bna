@@ -122,7 +122,7 @@ module Bnet
     #   defaults to current time
     # @return Float progress in range (0.0 .. 1.0)
     def self.get_progress(timestamp = nil)
-      timestamp ||= Time.now.getutc.to_f
+      timestamp ||= CACurrentMediaTime()
       next_timestamp = (timestamp.to_i / 30 + 1) * 30.0
       1.0 - (next_timestamp - timestamp) / 30.0
     end
