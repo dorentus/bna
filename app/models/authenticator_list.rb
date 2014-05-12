@@ -13,6 +13,7 @@ class AuthenticatorList
     end
 
     def add_authenticator(authenticator)
+      return false if authenticator_exists? authenticator
       SSKeychain.setPassword(authenticator.secret,
                              forService: KEYCHAIN_SERVICE,
                              account: authenticator.serial)
@@ -21,6 +22,11 @@ class AuthenticatorList
     def del_authenticator(authenticator)
       SSKeychain.deletePasswordForService(KEYCHAIN_SERVICE,
                                           account: authenticator.serial)
+    end
+
+    def authenticator_exists?(authenticator)
+      serial = authenticator.is_a?(Bnet::Authenticator) ? authenticator.serial : Bnet::Attributes::Serial.new(authenticator).to_s
+      !!SSKeychain.passwordForService(KEYCHAIN_SERVICE, account: serial)
     end
 
     private

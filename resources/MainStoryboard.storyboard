@@ -40,7 +40,7 @@
                                 <connections>
                                     <outlet property="serial_label" destination="IiA-Qu-idE" id="73o-IW-ZCe"/>
                                     <outlet property="token_label" destination="rgf-p4-bml" id="u1P-tN-umG"/>
-                                    <segue destination="7nT-1x-2UD" kind="push" id="gHv-d8-MqP"/>
+                                    <segue destination="7nT-1x-2UD" kind="push" identifier="authenticator_detail" id="gHv-d8-MqP"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -57,10 +57,65 @@
                         </barButtonItem>
                     </navigationItem>
                     <size key="freeformSize" width="320" height="568"/>
+                    <connections>
+                        <segue destination="hP0-Af-twV" kind="modal" identifier="authenticator_restore" id="pLg-ey-Mve"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dK5-26-7yi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="186" y="-53"/>
+        </scene>
+        <!--Restoration View Controller-->
+        <scene sceneID="Jst-sK-oaV">
+            <objects>
+                <viewController modalTransitionStyle="partialCurl" id="hP0-Af-twV" customClass="RestorationViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="V9G-X8-3EW"/>
+                        <viewControllerLayoutGuide type="bottom" id="lDL-vB-hMk"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="43J-Pa-usI">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Serial" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="7KX-Id-Gx4">
+                                <rect key="frame" x="20" y="199" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" keyboardType="alphabet" returnKeyType="next"/>
+                                <connections>
+                                    <action selector="textChanged:" destination="hP0-Af-twV" eventType="editingChanged" id="QSp-fl-G68"/>
+                                    <outlet property="delegate" destination="hP0-Af-twV" id="VgQ-hJ-ge2"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Restoration Code" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="XgV-jy-1dy">
+                                <rect key="frame" x="20" y="249" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" keyboardType="alphabet" returnKeyType="done"/>
+                                <connections>
+                                    <action selector="textChanged:" destination="hP0-Af-twV" eventType="editingChanged" id="bOK-jF-REA"/>
+                                    <outlet property="delegate" destination="hP0-Af-twV" id="fjI-SY-kVw"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VJg-sC-xZD">
+                                <rect key="frame" x="20" y="154" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="error_label" destination="VJg-sC-xZD" id="dxK-8a-mlg"/>
+                        <outlet property="restorecode_field" destination="XgV-jy-1dy" id="4mt-ik-waZ"/>
+                        <outlet property="serial_field" destination="7KX-Id-Gx4" id="KNm-pf-INP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8PO-oh-JHq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="697" y="281"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="TZ4-a7-DuK">
@@ -81,8 +136,8 @@
                                 <color key="textColor" red="0.0" green="0.50196078430000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="55555555" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8OW-bF-KPI">
-                                <rect key="frame" x="20" y="362" width="280" height="45"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="55555555" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" minimumFontSize="10" adjustsLetterSpacingToFitWidth="YES" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="8OW-bF-KPI">
+                                <rect key="frame" x="20" y="362" width="280" height="186"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -99,7 +154,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XnR-yQ-lKJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="611" y="-53"/>
+            <point key="canvasLocation" x="693" y="-502"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="GUO-ca-kMw">
