@@ -23,3 +23,16 @@ class String
     substring_at(0, length: length).ljust(length, pad_string)
   end
 end
+
+%w(Restorecode Secret Serial).map do |m|
+  Bnet::Attributes.const_get(m).class_eval do
+    def self.is_valid?(input)
+      begin
+        new input
+      rescue Bnet::BadInputError
+        return false
+      end
+      true
+    end
+  end
+end
