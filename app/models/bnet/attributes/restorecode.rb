@@ -5,7 +5,7 @@ module Bnet
 
       def initialize(serial_or_restorecode, secret = nil)
         if secret.nil?
-          restorecode = serial_or_restorecode
+          restorecode = serial_or_restorecode.upcase
           raise BadInputError, "bad restoration code #{restorecode}" unless restorecode =~ /[0-9A-Z]{10}/
           @text = restorecode
         else
@@ -14,7 +14,7 @@ module Bnet
 
           bin = (serial.normalized + secret.binary).to_data.SHA1Digest.to_str
 
-          @text = bin.split(//).last(10).join.bytes.map do |v|
+          @text = bin.bytes.to_a.last(10).map do |v|
             RESTORECODE_MAP[v & 0x1f]
           end.pack('C*')
         end

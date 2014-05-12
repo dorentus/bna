@@ -28,6 +28,13 @@ describe "bnet-authenticator-load" do
   end
 end
 
+describe "bnet-authenticator-load-alt" do
+  it "has expected restoration code" do
+    authenticator = Bnet::Authenticator.new 'us140511501896', '2cbbbc17a22b55a983355f33f72ad8a0b2bdb246'
+    authenticator.restorecode.should == '9V65AQ48M1'
+  end
+end
+
 if ENV['SPEC_SKIP_NETWORKING'].nil?
   describe "bnet-authenticator-networking" do
     it "can request for server time" do
