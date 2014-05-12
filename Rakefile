@@ -10,7 +10,7 @@ end
 
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
-  app.name = 'Bna'
+  app.name = '👾'
   app.identifier = 'rox.dorentus.bna'
   app.frameworks << 'QuartzCore' << 'Security'
   app.vendor_project('vendor/NSData+Digest', :static)
