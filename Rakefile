@@ -21,5 +21,5 @@ Motion::Project::App.setup do |app|
   app.entitlements['keychain-access-groups'] = [
     app.seed_id + '.' + app.identifier
   ] if ENV['TRAVIS'].nil?
-  app.files_dependencies 'app/helpers/bna_helpers.rb' => 'app/models/bnet/authenticator.rb'
+  app.files_dependencies 'app/helpers/bna_helpers.rb' => 'app/lib/bnet/authenticator.rb'
 end
