@@ -1,9 +1,8 @@
-class DetailViewController < UIViewController
+class DetailViewController < UITableViewController
   extend IB
 
   outlet :token_label, UILabel
   outlet :restorecode_label, UILabel
-  outlet :countdown_view, UIProgressView
 
   attr_accessor :authenticator
 
