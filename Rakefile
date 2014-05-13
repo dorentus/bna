@@ -10,7 +10,7 @@ end
 
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
-  app.name = '👾'
+  app.name = 'Authenticator'
   app.identifier = 'rox.dorentus.bna'
   app.frameworks << 'QuartzCore' << 'Security'
   app.vendor_project('vendor/NSData+Digest', :static)
@@ -22,4 +22,5 @@ Motion::Project::App.setup do |app|
     app.seed_id + '.' + app.identifier
   ] if ENV['TRAVIS'].nil?
   app.files_dependencies 'app/helpers/bna_helpers.rb' => 'app/lib/bnet/authenticator.rb'
+  app.icons = Dir.glob('resources/icons/*.png').map { |s| s.sub('resources/', '') }
 end
