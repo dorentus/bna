@@ -6,29 +6,14 @@ class MainViewController < UITableViewController
   extend IB
 
   include MainViewControllerTableView
+  include MainViewControllerProgressView
 
   ib_action :addButtonTapped
 
   def viewDidLoad
     super
 
-    @progressview = UIProgressView.alloc.initWithProgressViewStyle(UIProgressViewStyleDefault)
-    @progressview.trackTintColor = UIColor.clearColor
-    @progressview.progress = 0.5
-    @progressview.translatesAutoresizingMaskIntoConstraints = false
-    self.navigationController.view.addSubview @progressview
-
-    self.navigationController.view.addConstraints NSLayoutConstraint.constraintsWithVisualFormat("V:[navbar]-(-2)-[progressview]",
-                                                                            options: NSLayoutFormatDirectionLeadingToTrailing,
-                                                                            metrics: nil,
-                                                                            views: { "navbar" => self.navigationController.navigationBar, "progressview" => @progressview })
-    self.navigationController.view.addConstraints NSLayoutConstraint.constraintsWithVisualFormat("H:|[progressview]|",
-                                                                            options: NSLayoutFormatDirectionLeadingToTrailing,
-                                                                            metrics: nil,
-                                                                            views: {"progressview" => @progressview})
-
-    @timer = CADisplayLink.displayLinkWithTarget(self, selector: :update_progress)
-    @timer.addToRunLoop(NSRunLoop.currentRunLoop, forMode: NSRunLoopCommonModes)
+    add_progressview
   end
 
   def reload_and_scroll_to_bottom
@@ -49,13 +34,6 @@ class MainViewController < UITableViewController
       authenticator = sender.authenticator
       dest.authenticator = WeakRef.new authenticator
     end
-  end
-
-  def update_progress
-    return if @progressview.nil?
-    progress = Bnet::Authenticator.get_progress
-    @progressview.progress = progress
-    @progressview.progressTintColor = BnaHelpers.color_at_progress(progress)
   end
 
   def request_queue
