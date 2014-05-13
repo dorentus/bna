@@ -31,6 +31,17 @@ class MainViewController < UITableViewController
     @timer.addToRunLoop(NSRunLoop.currentRunLoop, forMode: NSRunLoopCommonModes)
   end
 
+  def reload_and_scroll_to_bottom
+    Dispatch::Queue.main.async do
+      tableView.reloadData
+      tableView.scrollToRowAtIndexPath(
+        NSIndexPath.indexPathForRow(AuthenticatorList.number_of_authenticators - 1, inSection: 0),
+        atScrollPosition: UITableViewScrollPositionBottom,
+        animated: true
+      )
+    end
+  end
+
   def prepareForSegue(segue, sender: sender)
     case segue.identifier
     when SEGUE_DETAIL
@@ -85,14 +96,8 @@ class MainViewController < UITableViewController
         authenticator = Bnet::Authenticator.request_authenticator(selected_region)
         puts "Authenticator: #{authenticator}"
         AuthenticatorList.add_authenticator authenticator
-        Dispatch::Queue.main.sync do
-          tableView.reloadData
-          tableView.scrollToRowAtIndexPath(
-            NSIndexPath.indexPathForRow(AuthenticatorList.number_of_authenticators - 1, inSection: 0),
-            atScrollPosition: UITableViewScrollPositionBottom,
-            animated: true)
-          MMProgressHUD.dismissWithSuccess 'success!'
-        end
+        reload_and_scroll_to_bottom
+        MMProgressHUD.dismissWithSuccess 'success!'
       rescue Bnet::BadInputError => e
         puts "Error: #{e}"
         MMProgressHUD.dismissWithError e.message

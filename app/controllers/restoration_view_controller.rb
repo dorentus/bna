@@ -56,17 +56,12 @@ class RestorationViewController < UIViewController
         authenticator = Bnet::Authenticator.restore_authenticator(serial_field.text, restorecode_field.text)
         puts "Authenticator: #{authenticator}"
         AuthenticatorList.add_authenticator authenticator
-        Dispatch::Queue.main.sync do
-          MMProgressHUD.dismissWithSuccess 'success!'
-          pc = self.presentingViewController
-          self.dismissViewControllerAnimated(true, completion: lambda do
-            pc.topViewController.tableView.reloadData
-            pc.topViewController.tableView.scrollToRowAtIndexPath(
-              NSIndexPath.indexPathForRow(AuthenticatorList.number_of_authenticators - 1, inSection: 0),
-              atScrollPosition: UITableViewScrollPositionBottom,
-              animated: true)
-          end)
-        end
+        MMProgressHUD.dismissWithSuccess 'success!'
+        pc = self.presentingViewController
+        self.dismissViewControllerAnimated(
+          true,
+          completion: lambda { pc.topViewController.reload_and_scroll_to_bottom }
+        )
       rescue Bnet::BadInputError => e
         puts "Error: #{e}"
         MMProgressHUD.dismissWithError e.message
