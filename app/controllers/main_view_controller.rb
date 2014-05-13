@@ -1,11 +1,11 @@
-class BnaViewController < UITableViewController
+class MainViewController < UITableViewController
   SEGUE_DETAIL = 'authenticator_detail'
   SEGUE_RESTORE = 'authenticator_restore'
   REGIONS = Bnet::AUTHENTICATOR_HOSTS.keys
 
   extend IB
 
-  include BnaViewControllerTableView
+  include MainViewControllerTableView
 
   ib_action :addButtonTapped
 

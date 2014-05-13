@@ -1,4 +1,4 @@
-module BnaViewControllerTableView
+module MainViewControllerTableView
   extend IB
 
   CELL_ID = 'AUTHENTICATOR_CELL'
