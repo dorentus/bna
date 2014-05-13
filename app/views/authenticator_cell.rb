@@ -9,13 +9,18 @@ class AuthenticatorCell < UITableViewCell
   outlet :serial_label, UILabel
 
   def start_timer
-    @timer.invalidate if (@timer && @timer.valid?)
     @timer = NSTimer.scheduledTimerWithTimeInterval(0.5,
                                                     target: self,
                                                     selector: :"schedule:",
                                                     userInfo: nil,
                                                     repeats: true)
     NSRunLoop.currentRunLoop.addTimer(@timer, forMode: NSRunLoopCommonModes)
+  end
+
+  def stop_timer
+    return unless @timer
+    @timer.invalidate if @timer.valid?
+    @timer = nil
   end
 
   def schedule(timer)
@@ -39,6 +44,5 @@ class AuthenticatorCell < UITableViewCell
     @authenticator = a_authenticator
     serial_label.text = authenticator.serial
     update_token
-    start_timer unless (@timer && @timer.valid?)
   end
 end
