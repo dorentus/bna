@@ -6,6 +6,11 @@ class RestorationViewController < UIViewController
   outlet :restorecode_field, UITextField
   ib_action :textChanged
 
+  def viewDidAppear(animated)
+    super(animated)
+    serial_field.becomeFirstResponder
+  end
+
   def textChanged(sender)
     validate_text_field(sender)
   end
