@@ -34,7 +34,9 @@ class AuthenticatorList
     private
 
     def authenticator_serials
-      userdefaults_authenticator_serials || keychain_authenticator_serials
+      a = userdefaults_authenticator_serials.to_a
+      b = keychain_authenticator_serials
+      a - (a - b) + (b - a)
     end
 
     def keychain_add_authenticator(authenticator)
@@ -57,18 +59,19 @@ class AuthenticatorList
     def userdefaults_move_authenticator_at(from, to: to)
       serials = authenticator_serials.dup
       serials.insert(to, serials.delete_at(from))
-      NSUserDefaults.standardUserDefaults.setObject(serials, forKey: USERDEFAULTS_KEY)
+      userdefaults_save(serials)
     end
 
     def userdefaults_add_authenticator(authenticator)
-      serials = authenticator_serials.dup << authenticator.serial
-      NSUserDefaults.standardUserDefaults.setObject(serials, forKey: USERDEFAULTS_KEY)
+      serials = authenticator_serials.dup
+      serials << authenticator.serial unless serials.last == authenticator.serial
+      userdefaults_save(serials)
     end
 
     def userdefaults_del_authenticator(authenticator)
       serials = authenticator_serials.dup
       serials.delete authenticator.serial
-      NSUserDefaults.standardUserDefaults.setObject(serials, forKey: USERDEFAULTS_KEY)
+      userdefaults_save(serials)
     end
 
     def userdefaults_authenticator_serials
@@ -76,6 +79,7 @@ class AuthenticatorList
     end
 
     def userdefaults_save(serials)
+      NSUserDefaults.standardUserDefaults.setObject(serials, forKey: USERDEFAULTS_KEY)
     end
   end
 end
