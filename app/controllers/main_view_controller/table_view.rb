@@ -10,7 +10,6 @@ module MainViewControllerTableView
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
     cell = tableView.dequeueReusableCellWithIdentifier(CELL_ID, forIndexPath: indexPath)
     cell.authenticator = AuthenticatorList.authenticator_at_index(indexPath.row)
-    cell.start_timer
     cell
   end
 
@@ -24,6 +23,10 @@ module MainViewControllerTableView
     if AuthenticatorList.del_authenticator(cell.authenticator)
       tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationAutomatic)
     end
+  end
+
+  def tableView(tableView, willDisplayCell: cell, forRowAtIndexPath: indexPath)
+    cell.start_timer
   end
 
   def tableView(tableView, didEndDisplayingCell: cell, forRowAtIndexPath: indexPath)
