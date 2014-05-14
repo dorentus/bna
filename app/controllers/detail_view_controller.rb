@@ -33,11 +33,11 @@ class DetailViewController < UITableViewController
   def update_token
     return if authenticator.nil?
 
-    timestamp = Time.now.getutc.to_f
+    timestamp = Util.current_epoch
     token, _ = authenticator.get_token timestamp.to_i
     progress = Bnet::Authenticator.get_progress timestamp
 
     token_label.text = token
-    token_label.textColor = BnaHelpers.color_at_progress(progress)
+    token_label.textColor = Util.color_at_progress(progress)
   end
 end

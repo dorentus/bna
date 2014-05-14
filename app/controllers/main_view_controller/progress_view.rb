@@ -21,8 +21,8 @@ module MainViewControllerProgressView
 
   def update_progress
     return if @progressview.nil?
-    progress = Bnet::Authenticator.get_progress
+    progress = Bnet::Authenticator.get_progress Util.current_epoch
     @progressview.progress = progress
-    @progressview.progressTintColor = BnaHelpers.color_at_progress(progress)
+    @progressview.progressTintColor = Util.color_at_progress(progress)
   end
 end
