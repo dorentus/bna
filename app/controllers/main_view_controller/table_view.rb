@@ -17,6 +17,10 @@ module MainViewControllerTableView
     AuthenticatorCell::DEFAULT_HEIGHT
   end
 
+  def tableView(tableView, editingStyleForRowAtIndexPath: indexPath)
+    tableView.editing? ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleNone
+  end
+
   def tableView(tableView, commitEditingStyle: editingStyle, forRowAtIndexPath: indexPath)
     return unless editingStyle == UITableViewCellEditingStyleDelete
     cell = tableView.cellForRowAtIndexPath(indexPath)

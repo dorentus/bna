@@ -50,9 +50,14 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Authenticators" id="cFH-8G-jwb">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="DVT-rB-gbM">
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="DVT-rB-gbM">
                             <connections>
                                 <action selector="addButtonTapped:" destination="ebS-Na-Adr" id="FS2-Oh-Awh"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="gsN-Yn-dux">
+                            <connections>
+                                <action selector="editButtonTapped:" destination="ebS-Na-Adr" id="XoR-4U-nez"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

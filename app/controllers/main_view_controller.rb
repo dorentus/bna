@@ -9,6 +9,7 @@ class MainViewController < UITableViewController
   include MainViewControllerProgressView
 
   ib_action :addButtonTapped
+  ib_action :editButtonTapped
 
   def viewDidLoad
     super
@@ -34,6 +35,10 @@ class MainViewController < UITableViewController
       authenticator = sender.authenticator
       dest.authenticator = WeakRef.new authenticator
     end
+  end
+
+  def editButtonTapped(sender)
+    self.tableView.setEditing !self.tableView.editing?, animated: true
   end
 
   def request_queue
