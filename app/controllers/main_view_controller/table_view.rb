@@ -29,6 +29,10 @@ module MainViewControllerTableView
     end
   end
 
+  def tableView(tableView, moveRowAtIndexPath: fromIndexPath, toIndexPath: toIndexPath)
+    AuthenticatorList.move_authenticator_at(fromIndexPath.row, to: toIndexPath.row)
+  end
+
   def tableView(tableView, willDisplayCell: cell, forRowAtIndexPath: indexPath)
     cell.start_timer
   end
