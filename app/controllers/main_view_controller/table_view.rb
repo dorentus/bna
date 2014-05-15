@@ -23,9 +23,11 @@ module MainViewControllerTableView
 
   def tableView(tableView, commitEditingStyle: editingStyle, forRowAtIndexPath: indexPath)
     return unless editingStyle == UITableViewCellEditingStyleDelete
-    cell = tableView.cellForRowAtIndexPath(indexPath)
-    if AuthenticatorList.del_authenticator(cell.authenticator)
-      tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationAutomatic)
+    authenticator = tableView.cellForRowAtIndexPath(indexPath).authenticator
+    UIActionSheet.alert('Confirm Deletion', buttons: {:cancel => 'Cancel', :destructive => 'Delete'}) do |button|
+      break unless button == :destructive
+      AuthenticatorList.del_authenticator(authenticator) &&
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationAutomatic)
     end
   end
 

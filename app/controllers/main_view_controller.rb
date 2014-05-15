@@ -1,7 +1,6 @@
 class MainViewController < UITableViewController
   SEGUE_DETAIL = 'authenticator_detail'
   SEGUE_RESTORE = 'authenticator_restore'
-  REGIONS = Bnet::AUTHENTICATOR_HOSTS.keys
 
   extend IB
 
@@ -45,47 +44,34 @@ class MainViewController < UITableViewController
     @request_queue ||= Dispatch::Queue.new 'bna_request'
   end
 
-  def dummy
-    # to make sheet.send :'initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:', ... work
-    UIActionSheet.alloc.initWithTitle(nil, delegate:nil, cancelButtonTitle:nil, destructiveButtonTitle:nil, otherButtonTitles:nil)
-  end
-
   def addButtonTapped(sender)
-    args = ['Choose Region', self, 'Cancel', nil]
-    args.concat REGIONS
-    args << 'RESTORE'
-    args << nil
+    buttons = {
+      cancel: 'Cancel',
+      destructive: nil,
+    }
+    buttons.merge!(Hash[Bnet::AUTHENTICATOR_HOSTS.keys.map { |r| [r, r.to_s] }])
+    buttons.merge!({
+      restore: 'Restore',
+    })
 
-    sheet = UIActionSheet.alloc
-    sheet.send :'initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:', *args
-    sheet.showFromBarButtonItem(sender, animated: true)
+    UIActionSheet.alert('Choose', buttons: buttons) do |button|
+      if button == :restore
+        self.performSegueWithIdentifier(SEGUE_RESTORE, sender: self)
+      elsif Bnet::AUTHENTICATOR_HOSTS.has_key? button
+        request_authenticator button
+      end
+    end
   end
 
-  def actionSheet(sheet, clickedButtonAtIndex: index)
-    if index == REGIONS.count
-      puts "RESTORE"
-      self.performSegueWithIdentifier(SEGUE_RESTORE, sender: self)
-      return
-    end
-
-    selected_region = REGIONS.fetch index, nil
-    return if selected_region.nil?
-
-    puts "##{index} #{selected_region} choosen"
-
+  def request_authenticator(region)
     MMProgressHUD.show
     request_queue.async do
       begin
-        authenticator = Bnet::Authenticator.request_authenticator(selected_region)
-        puts "Authenticator: #{authenticator}"
+        authenticator = Bnet::Authenticator.request_authenticator(region)
         AuthenticatorList.add_authenticator authenticator
         reload_and_scroll_to_bottom
         MMProgressHUD.dismissWithSuccess 'success!'
-      rescue Bnet::BadInputError => e
-        puts "Error: #{e}"
-        MMProgressHUD.dismissWithError e.message
-      rescue Bnet::RequestFailedError => e
-        puts "Error: #{e}"
+      rescue Bnet::BadInputError, Bnet::RequestFailedError => e
         MMProgressHUD.dismissWithError e.message
       end
     end

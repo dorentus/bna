@@ -53,13 +53,10 @@ class RestorationViewController < UIViewController
   end
 
   def submit
-    puts "#{serial_field.text} #{restorecode_field.text}"
-
     MMProgressHUD.show
     restore_queue.async do
       begin
         authenticator = Bnet::Authenticator.restore_authenticator(serial_field.text, restorecode_field.text)
-        puts "Authenticator: #{authenticator}"
         AuthenticatorList.add_authenticator authenticator
         MMProgressHUD.dismissWithSuccess 'success!'
         pc = self.presentingViewController
@@ -67,10 +64,7 @@ class RestorationViewController < UIViewController
           true,
           completion: lambda { pc.topViewController.reload_and_scroll_to_bottom }
         )
-      rescue Bnet::BadInputError => e
-        puts "Error: #{e}"
-        MMProgressHUD.dismissWithError e.message
-      rescue Bnet::RequestFailedError => e
+      rescue Bnet::BadInputError, Bnet::RequestFailedError => e
         puts "Error: #{e}"
         MMProgressHUD.dismissWithError e.message
       end
