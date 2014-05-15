@@ -19,11 +19,17 @@ class MainViewController < UITableViewController
   def reload_and_scroll_to_bottom
     Dispatch::Queue.main.async do
       tableView.reloadData
+      last_index_path = NSIndexPath.indexPathForRow(AuthenticatorList.number_of_authenticators - 1, inSection: 0)
       tableView.scrollToRowAtIndexPath(
-        NSIndexPath.indexPathForRow(AuthenticatorList.number_of_authenticators - 1, inSection: 0),
+        last_index_path,
         atScrollPosition: UITableViewScrollPositionBottom,
         animated: true
       )
+      Dispatch::Queue.main.after 0.45 do
+        last_cell = tableView.cellForRowAtIndexPath last_index_path
+        last_cell.setHighlighted true, animated: true
+        last_cell.shake repeat: 2, duration: 0.5
+      end
     end
   end
 

@@ -8,4 +8,5 @@ gem 'sugarcube', :require => [
   'sugarcube-repl',
   'sugarcube-factories',
   'sugarcube-localized',
+  'sugarcube-animations',
 ]
