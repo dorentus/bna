@@ -9,4 +9,5 @@ gem 'sugarcube', :require => [
   'sugarcube-factories',
   'sugarcube-localized',
   'sugarcube-animations',
+  'sugarcube-color',
 ]
