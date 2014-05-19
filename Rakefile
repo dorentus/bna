@@ -12,6 +12,7 @@ Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'Authenticator'
   app.identifier = 'rox.dorentus.bna'
+  app.info_plist['UIMainStoryboardFile'] = 'MainStoryboard'
   app.frameworks << 'QuartzCore' << 'Security'
   app.vendor_project('vendor/NSData+Digest', :static)
   app.pods do
